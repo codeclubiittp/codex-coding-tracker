@@ -3,26 +3,44 @@ import SignupPopup from './SignupPopup';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
+// import { Mail, Lock, Eye, EyeOff, Github, Chrome, ArrowRight } from 'lucide-react';
 
 library.add(fas);
 
+const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShowPassword }) => {
+  return (
+    <div className="flex items-center border w-full focus-within:border-indigo-500 transition duration-300 pr-3 gap-2 bg-white border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
+      <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl ml-3" />
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className="w-full h-full pl-1 outline-none placeholder-gray-500 text-sm"
+      />
+
+      {(type === "password" || type === "text") && (
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          <FontAwesomeIcon
+            icon={showPassword ? "eye" : "eye-slash"}
+            className="text-gray-500 text-xl mr-2"
+          />
+        </button>
+      )}
+
+      {/* <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl" /> */}
+    </div>
+  );
+};
 
 const LoginPage = () => {
-    const Input = (props) => {
-        return (
-            <div className="flex items-center border w-full focus-within:border-indigo-500 transition duration-300 pr-3 gap-2 bg-white border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
-                <input
-                    type={props.type}
-                    placeholder={props.placeholder}
-                    className="w-full h-full pl-4 outline-none placeholder-gray-500 text-sm"
-                />
 
-                <FontAwesomeIcon icon={props.icon} className="text-gray-500 text-xl" />
-            </div>
-        );
-    };
-
-
+    const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [showSignup, setShowSignup] = useState(false);
 
     return (
@@ -72,14 +90,42 @@ const LoginPage = () => {
 
                     <form action="">
                         <div className="inputs-section bg-white py-10 px-12 rounded-2xl mt-8">
+
+                            <button className="flex items-center justify-center gap-3 mb-4 w-full bg-[#f89f1b] hover:bg-[#e68e0d] text-white py-3 px-4 rounded-xl font-semibold transition-all hover:shadow-lg active:scale-[0.98]">
+                                {/* <FontAwesomeIcon icon={['fab', 'linkedin-in']} className="hidden" />  */}
+                                <img src="assets/leetcode.svg" className='w-6 text-white' alt="" />
+                                <span>Login with LeetCode</span>
+                            </button>
+
+                            <div className="flex items-center justify-center mb-3 text-gray-400">
+                                <hr className="flex-1"/>
+                                <p className="mx-3 whitespace-nowrap">or continue with</p>
+                                <hr className="flex-1"/>
+                            </div>
+
                             <div className="group-container">
                                 <div className="div-group mb-6">
                                     {/* <input type="email" name="" id="" /> */}
-                                    <Input type="email" placeholder="Email Address" icon="at" />
+                                    <Input 
+                                        type="email" 
+                                        placeholder="Email Address" 
+                                        icon="at" 
+                                        value={email} 
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                    
                                 </div>
                                 <div className="div-group mb-6">
                                     {/* <input type="email" name="" id="" /> */}
-                                    <Input type="password" placeholder="Password" icon='lock' />
+                                    <Input 
+                                        type={showPassword ? "text" : "password"} 
+                                        placeholder="Password" 
+                                        icon='lock' 
+                                        value={password} 
+                                        onChange={(e) => setPassword(e.target.value)} 
+                                        showPassword={showPassword}
+                                        setShowPassword={setShowPassword}
+                                    />
                                 </div>
                             </div>
                             <input type="submit" value="Login" className="bg-[#693ade] text-[#fff] cursor-pointer py-2.5 px-6 block w-full rounded-[5px] mb-4" />

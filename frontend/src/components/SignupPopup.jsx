@@ -35,13 +35,14 @@ const SignupPopup = ({ onClose }) => {
                     </button>
 
                     <button className="flex items-center justify-center gap-3 w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-xl font-semibold transition-all hover:shadow-lg active:scale-[0.98]">
-                        <FontAwesomeIcon icon={['fab', 'google']} className="text-xl text-red-500" />
+                        {/* <FontAwesomeIcon icon={['fab', 'google']} className="text-xl text-red-500" /> */}
+                        <img src="assets/google.svg" className='w-6 text-white' alt="" />
                         <span>Sign up with Google</span>
                     </button>
 
                     <button className="flex items-center justify-center gap-3 w-full bg-[#f89f1b] hover:bg-[#e68e0d] text-white py-3 px-4 rounded-xl font-semibold transition-all hover:shadow-lg active:scale-[0.98]">
                         {/* <FontAwesomeIcon icon={['fab', 'linkedin-in']} className="hidden" />  */}
-                        <img src="assets/leetcode.svg" className='w-8 text-white' alt="" />
+                        <img src="assets/leetcode.svg" className='w-6 text-white' alt="" />
                         <span>Sign up with LeetCode</span>
                     </button>
                 </div>
