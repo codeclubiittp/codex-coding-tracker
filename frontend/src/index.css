@@ -3,10 +3,33 @@
 @theme {
     --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-
+/* Default Light Mode (Nordic Slate) */
 :root {
-    font-family: "Poppins", sans-serif;
+  --primary-bg: #f8f9fd;
+  --secondary-bg: #FFFFFF;
+  --text-primary: #1A1D23;
+  --text-secondary: #495057;
+  --yellow: #f89f1b;
+  --violet: #693ade;
+  --hover: #e7f5ff;
+  --hoverb:#7c52e1;
+  --success: #2B8A3E;
+  font-family: "Poppins", sans-serif;
 }
+
+/* Dark Mode Overrides (Deep Tech) */
+/* [data-theme='dark'] { */
+/* :root{  
+  --primary-bg: #0D1117;
+  --secondary-bg: #161B22;
+  --text-primary: #E6EDF3;
+  --text-secondary: #495057;
+  --yellow: #58A6FF;
+  --violet: #8e56dd;
+  --border-color: #30363D;
+  --hoverb:#7c52e1;
+  --success: #3FB950;
+} */
 
 .inputs-section {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
@@ -32,3 +55,7 @@
 .icon-3 { bottom: 20%; left: 15%; animation-delay: 2s; }
 .icon-4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
 .icon-5 { top: 50%; left: 5%; animation-delay: 3s; }
+
+aside{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}

@@ -36,7 +36,35 @@ const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShow
   );
 };
 
+
 const LoginPage = () => {
+
+
+    //submit data
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password,
+                    name: 'user'
+                })
+            });
+
+            const data = await response.json();
+            console.log("Backend response:", data);
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
 
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
@@ -88,11 +116,13 @@ const LoginPage = () => {
                     <h3 className='text-xl text-gray-500 mb-3'>Access your coding journey and metrics</h3>
 
 
-                    <form action="">
+                    <form action="" onSubmit={handleSubmit}>
                         <div className="inputs-section bg-white py-10 px-12 rounded-2xl mt-8">
 
-                            <button className="flex items-center justify-center gap-3 mb-4 w-full bg-[#f89f1b] hover:bg-[#e68e0d] text-white py-3 px-4 rounded-xl font-semibold transition-all hover:shadow-lg active:scale-[0.98]">
-                                {/* <FontAwesomeIcon icon={['fab', 'linkedin-in']} className="hidden" />  */}
+
+                            {/* LeetCode signIn setup */}
+
+                            {/* <button className="flex items-center justify-center gap-3 mb-4 w-full bg-[#f89f1b] hover:bg-[#e68e0d] text-white py-3 px-4 rounded-xl font-semibold transition-all hover:shadow-lg active:scale-[0.98]">
                                 <img src="assets/leetcode.svg" className='w-6 text-white' alt="" />
                                 <span>Login with LeetCode</span>
                             </button>
@@ -101,7 +131,7 @@ const LoginPage = () => {
                                 <hr className="flex-1"/>
                                 <p className="mx-3 whitespace-nowrap">or continue with</p>
                                 <hr className="flex-1"/>
-                            </div>
+                            </div> */}
 
                             <div className="group-container">
                                 <div className="div-group mb-6">
@@ -130,7 +160,7 @@ const LoginPage = () => {
                             </div>
                             <input type="submit" value="Login" className="bg-[#693ade] text-[#fff] cursor-pointer py-2.5 px-6 block w-full rounded-[5px] mb-4" />
 
-                            <a href="#"><span className='text-[#693ade] text-[15px]'>Forget Password</span></a>
+                            <a href="#"><span className='text-[#693ade] text-[15px]'>Forgot Password</span></a>
                             <p className='text-[15px] text-gray-600'>Dont have an acoount? <button type="button" onClick={() => setShowSignup(true)} className='text-[#693ade] hover:underline cursor-pointer'>Sign Up</button></p>
                         </div>
                     </form>
