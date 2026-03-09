@@ -25,7 +25,7 @@ function validateUserData(name, email, password){
 
 const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShowPassword }) => {
   return (
-    <div className="flex items-center border w-full focus-within:border-indigo-500 transition duration-300 pr-3 gap-2 bg-white border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
+    <div className="flex items-center border w-full focus-within:border-[var(--violet)] transition duration-300 pr-3 gap-2 bg-[var(--secondary-bg)] border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
       <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl ml-3" />
       <input
         type={type}
@@ -111,7 +111,7 @@ const SignupPopup = ({ onClose }) => {
             ></div>
 
             {/* Popup */}
-            <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl p-8">
+            <div className="relative bg-[var(--secondary-bg)] w-full max-w-md rounded-2xl shadow-2xl p-8">
 
                 <button
                     onClick={onClose}
@@ -121,7 +121,7 @@ const SignupPopup = ({ onClose }) => {
                 </button>
 
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                    <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-2">
                         Create Account
                     </h2>
                     <p className="text-gray-500">
@@ -129,7 +129,7 @@ const SignupPopup = ({ onClose }) => {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} noValidate>
 
                     {/* Name */}
                     <div className="div-group mb-6">
@@ -187,7 +187,7 @@ const SignupPopup = ({ onClose }) => {
 
                     <button
                         type="submit"
-                        className="bg-[#693ade] text-white py-2.5 px-6 w-full rounded cursor-pointer"
+                        className="bg-[var(--violet)] text-white py-2.5 px-6 w-full rounded cursor-pointer hover:bg-[var(--hoverb)]"
                     >
                         Sign Up
                     </button>
@@ -198,7 +198,7 @@ const SignupPopup = ({ onClose }) => {
                     Already have an account?{" "}
                     <button
                         onClick={onClose}
-                        className="text-[#693ade] font-semibold hover:underline cursor-pointer"
+                        className="text-[var(--violet)] font-semibold hover:underline cursor-pointer"
                     >
                         Log In
                     </button>

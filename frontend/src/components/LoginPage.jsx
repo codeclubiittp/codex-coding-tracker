@@ -23,7 +23,7 @@ function validateUserData(email, password){
 
 const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShowPassword }) => {
   return (
-    <div className="flex items-center border w-full focus-within:border-indigo-500 transition duration-300 pr-3 gap-2 bg-white border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
+    <div className="flex items-center border w-full focus-within:border-[var(--violet)] transition duration-300 pr-3 gap-2 bg-[var(--secondary-bg)] border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
       <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl ml-3" />
       <input
         type={type}
@@ -95,7 +95,7 @@ const LoginPage = () => {
     const [showSignup, setShowSignup] = useState(false);
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-[#f8f9fd] p-4 font-sans relative overflow-hidden">
+        <div className="min-h-screen w-full flex items-center justify-center bg-[var(--primary-bg)] p-4 font-sans relative overflow-hidden">
             {/* Popup */}
             {showSignup && <SignupPopup onClose={() => setShowSignup(false)} />}
 
@@ -134,13 +134,13 @@ const LoginPage = () => {
 
             {/* Main Content with Blur */}
             <div className={`flex justify-center items-center transition-all duration-300 ${showSignup ? 'blur-md' : 'blur-0'}`}>
-                <div className="login-area text-black text-center">
-                    <h1 className="text-5xl font-bold p-4">Login to <span className='text-[#693ade]'>Codex</span> Pro</h1>
+                <div className="login-area text-[var(--text-primary)] text-center">
+                    <h1 className="text-5xl font-bold p-4">Login to <span className='text-[var(--violet)]'>Codex</span> Pro</h1>
                     <h3 className='text-xl text-gray-500 mb-3'>Access your coding journey and metrics</h3>
 
 
                     <form action="" onSubmit={handleSubmit} noValidate>
-                        <div className="inputs-section bg-white py-10 px-12 rounded-2xl mt-8">
+                        <div className="inputs-section bg-[var(--secondary-bg)] py-10 px-12 rounded-2xl mt-8">
 
 
                             {/* LeetCode signIn setup */}
@@ -181,10 +181,10 @@ const LoginPage = () => {
                                     />
                                 </div>
                             </div>
-                            <input type="submit" value="Login" className="bg-[#693ade] text-[#fff] cursor-pointer py-2.5 px-6 block w-full rounded-[5px] mb-4" />
+                            <input type="submit" value="Login" className="bg-[var(--violet)] text-[#fff] cursor-pointer py-2.5 px-6 block w-full rounded-[5px] mb-4 hover:bg-[var(--hoverb)]" />
 
-                            <a href="#"><span className='text-[#693ade] text-[15px]'>Forgot Password</span></a>
-                            <p className='text-[15px] text-gray-600'>Dont have an acoount? <button type="button" onClick={() => setShowSignup(true)} className='text-[#693ade] hover:underline cursor-pointer'>Sign Up</button></p>
+                            <a href="#"><span className='text-[var(--violet)] text-[15px]'>Forgot Password</span></a>
+                            <p className='text-[15px] text-gray-600'>Dont have an acoount? <button type="button" onClick={() => setShowSignup(true)} className='text-[var(--violet)] hover:underline cursor-pointer'>Sign Up</button></p>
                         </div>
                     </form>
                 </div>
