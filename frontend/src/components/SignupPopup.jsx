@@ -2,10 +2,26 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { toast } from "react-toastify";
+import {validatePassword, validateEmail, validateName} from "./validateLogin.js";
 
 library.add(fab);
 
-
+function validateUserData(name, email, password){
+    if(validateName(name) != null){
+        toast.error(validateName(name));
+        return false;
+    }
+    if(validateEmail(email) != null){
+        toast.error(validateEmail(email));
+        return false;
+    }
+    if(validatePassword(password) != null){
+        toast.error(validatePassword(password));
+        return false;
+    }
+    return true;
+}
 
 const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShowPassword }) => {
   return (
@@ -49,8 +65,11 @@ const SignupPopup = ({ onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+
+        if(!validateUserData(name,email,password)) return;
+
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
@@ -71,10 +90,10 @@ const SignupPopup = ({ onClose }) => {
             console.log("Backend response:", data);
 
             if (response.ok) {
-                alert("Signup successful!");
+                toast.success("Signup successful!");
                 onClose();
             } else {
-                alert(data.detail || "Signup failed");
+                toast.error(data.detail || "SignUp failed");
             }
 
         } catch (error) {

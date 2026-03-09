@@ -3,9 +3,23 @@ import SignupPopup from './SignupPopup';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-// import { Mail, Lock, Eye, EyeOff, Github, Chrome, ArrowRight } from 'lucide-react';
+import { toast } from "react-toastify";
+
+import {validatePassword, validateEmail, validateName} from "./validateLogin.js";
 
 library.add(fas);
+
+function validateUserData(email, password){
+    if(validateEmail(email) != null){
+        toast.error(validateEmail(email));
+        return false;
+    }
+    if(validatePassword(password) != null){
+        toast.error(validatePassword(password));
+        return false;
+    }
+    return true;
+}
 
 const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShowPassword }) => {
   return (
@@ -44,6 +58,8 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if(!validateUserData(email,password)) return;
+
         try {
             const response = await fetch("http://127.0.0.1:8000/login", {
                 method: "POST",
@@ -60,8 +76,15 @@ const LoginPage = () => {
             const data = await response.json();
             console.log("Backend response:", data);
 
+            if (response.ok) {
+                toast.success("Login successful");
+            } else {
+                toast.error(data.detail || "Login failed");
+            }
+
         } catch (error) {
             console.error("Error:", error);
+            toast.error("Server error. Please try again.");
         }
     };
 
@@ -116,7 +139,7 @@ const LoginPage = () => {
                     <h3 className='text-xl text-gray-500 mb-3'>Access your coding journey and metrics</h3>
 
 
-                    <form action="" onSubmit={handleSubmit}>
+                    <form action="" onSubmit={handleSubmit} noValidate>
                         <div className="inputs-section bg-white py-10 px-12 rounded-2xl mt-8">
 
 
