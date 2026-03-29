@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SignupPopup from './SignupPopup';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
-import {validatePassword, validateEmail, validateName} from "./validateLogin.js";
+import { validatePassword, validateEmail, validateName } from "./validateLogin.js";
 
 library.add(fas);
 
-function validateUserData(email, password){
-    if(validateEmail(email) != null){
+function validateUserData(email, password) {
+    if (validateEmail(email) != null) {
         toast.error(validateEmail(email));
         return false;
     }
-    if(validatePassword(password) != null){
+    if (validatePassword(password) != null) {
         toast.error(validatePassword(password));
         return false;
     }
@@ -22,50 +22,65 @@ function validateUserData(email, password){
 }
 
 const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShowPassword }) => {
-  return (
-    <div className="flex items-center border w-full focus-within:border-[var(--violet)] transition duration-300 pr-3 gap-2 bg-[var(--secondary-bg)] border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
-      <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl ml-3" />
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className="w-full h-full pl-1 outline-none placeholder-gray-500 text-sm"
-      />
+    return (
+        <div className="flex items-center border w-full focus-within:border-[var(--violet)] transition duration-300 pr-3 gap-2 bg-[var(--secondary-bg)] border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">
+            <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl ml-3" />
+            <input
+                type={type}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                className="w-full h-full pl-1 outline-none placeholder-gray-500 text-sm"
+            />
 
-      {(type === "password" || type === "text") && (
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          <FontAwesomeIcon
-            icon={showPassword ? "eye" : "eye-slash"}
-            className="text-gray-500 text-xl mr-2"
-          />
-        </button>
-      )}
+            {(type === "password" || type === "text") && (
+                <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                >
+                    <FontAwesomeIcon
+                        icon={showPassword ? "eye" : "eye-slash"}
+                        className="text-gray-500 text-xl mr-2"
+                    />
+                </button>
+            )}
 
-      {/* <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl" /> */}
-    </div>
-  );
+            {/* <FontAwesomeIcon icon={icon} className="text-gray-500 text-xl" /> */}
+        </div>
+    );
 };
 
 
-const LoginPage = () => {
+const LoginPage = ({ onLoginSuccess }) => {
+
+
+//     useEffect(() => {
+
+//     fetch("http://127.0.0.1:8000/check-session", {
+//         credentials: "include"
+//     })
+//     .then(res => {
+//         if(res.status === 401){
+//             window.location.href = "/login";
+//         }
+//     });
+
+// }, []);
 
 
     //submit data
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(!validateUserData(email,password)) return;
+        if (!validateUserData(email, password)) return;
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/login", {
+            const response = await fetch("http://localhost:8000/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     username: email,
                     password: password,
@@ -78,6 +93,7 @@ const LoginPage = () => {
 
             if (response.ok) {
                 toast.success("Login successful");
+                if (onLoginSuccess) onLoginSuccess();
             } else {
                 toast.error(data.detail || "Login failed");
             }
@@ -99,7 +115,7 @@ const LoginPage = () => {
             {/* Popup */}
             {showSignup && <SignupPopup onClose={() => setShowSignup(false)} />}
 
-            {/* Floating Icons (Now blurred along with main content) */}
+            
             <div className={`absolute inset-0 pointer-events-none transition-all duration-300 ${showSignup ? 'blur-md' : 'blur-0'}`}>
                 <div className="floating-icon icon-1">
                     <div className="bg-[#6366F1] p-2 rounded-xl">
@@ -159,23 +175,23 @@ const LoginPage = () => {
                             <div className="group-container">
                                 <div className="div-group mb-6">
                                     {/* <input type="email" name="" id="" /> */}
-                                    <Input 
-                                        type="email" 
-                                        placeholder="Email Address" 
-                                        icon="at" 
-                                        value={email} 
+                                    <Input
+                                        type="email"
+                                        placeholder="Email Address"
+                                        icon="at"
+                                        value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
-                                    
+
                                 </div>
                                 <div className="div-group mb-6">
                                     {/* <input type="email" name="" id="" /> */}
-                                    <Input 
-                                        type={showPassword ? "text" : "password"} 
-                                        placeholder="Password" 
-                                        icon='lock' 
-                                        value={password} 
-                                        onChange={(e) => setPassword(e.target.value)} 
+                                    <Input
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Password"
+                                        icon='lock'
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         showPassword={showPassword}
                                         setShowPassword={setShowPassword}
                                     />
