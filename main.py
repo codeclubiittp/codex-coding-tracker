@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-import models, schemas, security
+import models, schemas, security, leetcode_service
 from database import engine, get_db
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -100,6 +100,15 @@ async def check_session(request: Request):
         raise HTTPException(status_code=401, detail="Not logged in")
 
     return session[session_id]
+
+@app.get("/leetcode/{username}")
+async def fetch_stats(username: str):
+    # Notice the "leetcode_service." prefix here!
+    stats = await leetcode_service.get_leetcode_stats(username)
+    
+    if not stats:
+        raise HTTPException(status_code=404, detail="LeetCode user not found")
+    return stats
 
 
 @app.post("/logout")

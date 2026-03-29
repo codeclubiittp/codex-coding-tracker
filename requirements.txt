@@ -6,3 +6,4 @@ pydantic[email]
 bcrypt
 passlib
 greenlet
+httpx
