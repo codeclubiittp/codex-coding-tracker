@@ -21,7 +21,7 @@ async def get_leetcode_stats(username: str):
     """
     variables = {"username": username}
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         response = await client.post(
             LEETCODE_URL, 
             json={"query": query, "variables": variables}

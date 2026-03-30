@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-import models, schemas, security, leetcode_service
+import models, schemas, security, leetcode_service, codeforces_service
 from database import engine, get_db
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,7 +33,7 @@ app.add_middleware(
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(models.Base.metadata.create_all)
-
+    
 @app.post("/signup", response_model=schemas.UserOut)
 async def signup(user_data: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
     query = select(models.User).where(models.User.username == user_data.username)
@@ -101,14 +101,76 @@ async def check_session(request: Request):
 
     return session[session_id]
 
+@app.post("/update-handles")
+async def update_handles(
+    data: schemas.HandleUpdate, 
+    request: Request, 
+    db: AsyncSession = Depends(get_db)
+):
+
+    session_id = request.cookies.get("session_id")
+    if not session_id or session_id not in session:
+        raise HTTPException(status_code=401, detail="Not logged in")
+
+    current_username = session[session_id]["username"]
+
+    query = select(models.User).where(models.User.username == current_username)
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if data.leetcode_handle:
+        user.leetcode_handle = data.leetcode_handle
+    if data.codeforces_handle:
+        user.codeforces_handle = data.codeforces_handle
+    db.add(user)
+    await db.commit()
+    return {"message": "Handles updated successfully"}
+
+#we can use this as a search feature to view the stats of other people
 @app.get("/leetcode/{username}")
 async def fetch_stats(username: str):
-    # Notice the "leetcode_service." prefix here!
     stats = await leetcode_service.get_leetcode_stats(username)
     
     if not stats:
         raise HTTPException(status_code=404, detail="LeetCode user not found")
     return stats
+
+@app.get("/dashboard-data")
+async def get_dashboard_data(request: Request, db: AsyncSession = Depends(get_db)):
+
+    session_id = request.cookies.get("session_id")
+    if not session_id or session_id not in session:
+        raise HTTPException(status_code=401, detail="Not logged in")
+
+    current_username = session[session_id]["username"]
+    query = select(models.User).where(models.User.username == current_username)
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
+    all_stats = {
+        "user_name": user.name,
+        "leetcode": None,
+        "codeforces": None
+    }
+
+    if user.leetcode_handle:
+        try:
+            # We use a timeout-safe call here
+            all_stats["leetcode"] = await leetcode_service.get_leetcode_stats(user.leetcode_handle)
+        except Exception as e:
+            print(f"LeetCode Error: {e}")
+            all_stats["leetcode"] = {"error": "LeetCode currently unreachable"}
+    
+    if user.codeforces_handle:
+        try:
+            all_stats["codeforces"] = await codeforces_service.get_codeforces_stats(user.codeforces_handle)
+        except Exception as e:
+            print(f"Codeforces Error: {e}")
+            all_stats["codeforces"] = {"error": "Codeforces currently unreachable"}
+
+    return all_stats
 
 
 @app.post("/logout")
