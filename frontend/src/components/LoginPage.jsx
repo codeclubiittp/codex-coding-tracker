@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import ForgotPasswordPopup from './ForgotPasswordPopup.jsx';
 
 import { validatePassword, validateEmail, validateName } from "./validateLogin.js";
 
@@ -14,8 +15,8 @@ function validateUserData(email, password) {
         toast.error(validateEmail(email));
         return false;
     }
-    if (validatePassword(password) != null) {
-        toast.error(validatePassword(password));
+    if (!password) {
+        toast.error("Password is required");
         return false;
     }
     return true;
@@ -54,18 +55,18 @@ const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShow
 const LoginPage = ({ onLoginSuccess }) => {
 
 
-//     useEffect(() => {
+    //     useEffect(() => {
 
-//     fetch("http://127.0.0.1:8000/check-session", {
-//         credentials: "include"
-//     })
-//     .then(res => {
-//         if(res.status === 401){
-//             window.location.href = "/login";
-//         }
-//     });
+    //     fetch("http://127.0.0.1:8000/check-session", {
+    //         credentials: "include"
+    //     })
+    //     .then(res => {
+    //         if(res.status === 401){
+    //             window.location.href = "/login";
+    //         }
+    //     });
 
-// }, []);
+    // }, []);
 
 
     //submit data
@@ -109,13 +110,18 @@ const LoginPage = ({ onLoginSuccess }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showSignup, setShowSignup] = useState(false);
+    const [showForgot, setShowForgot] = useState(false);
 
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-[var(--primary-bg)] p-4 font-sans relative overflow-hidden">
             {/* Popup */}
             {showSignup && <SignupPopup onClose={() => setShowSignup(false)} />}
 
-            
+            {showForgot && (
+    <ForgotPasswordPopup onClose={() => setShowForgot(false)} />
+  )}
+
+
             <div className={`absolute inset-0 pointer-events-none transition-all duration-300 ${showSignup ? 'blur-md' : 'blur-0'}`}>
                 <div className="floating-icon icon-1">
                     <div className="bg-[#6366F1] p-2 rounded-xl">
@@ -148,7 +154,7 @@ const LoginPage = ({ onLoginSuccess }) => {
                 </div>
             </div>
 
-            {/* Main Content with Blur */}
+            {/* Main Content with Blur effect */}
             <div className={`flex justify-center items-center transition-all duration-300 ${showSignup ? 'blur-md' : 'blur-0'}`}>
                 <div className="login-area text-[var(--text-primary)] text-center">
                     <h1 className="text-5xl font-bold p-4">Login to <span className='text-[var(--violet)]'>Codex</span> Pro</h1>
@@ -199,7 +205,8 @@ const LoginPage = ({ onLoginSuccess }) => {
                             </div>
                             <input type="submit" value="Login" className="bg-[var(--violet)] text-[#fff] cursor-pointer py-2.5 px-6 block w-full rounded-[5px] mb-4 hover:bg-[var(--hoverb)]" />
 
-                            <a href="#"><span className='text-[var(--violet)] text-[15px]'>Forgot Password</span></a>
+                            <a href="#"><span onClick={() => setShowForgot(true)}
+                            className='text-[var(--violet)] text-[15px]'>Forgot Password</span></a>
                             <p className='text-[15px] text-gray-600'>Dont have an acoount? <button type="button" onClick={() => setShowSignup(true)} className='text-[var(--violet)] hover:underline cursor-pointer'>Sign Up</button></p>
                         </div>
                     </form>

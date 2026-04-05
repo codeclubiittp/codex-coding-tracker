@@ -32,7 +32,7 @@ const Input = ({ type, placeholder, icon, value, onChange, showPassword, setShow
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="w-full h-full pl-1 outline-none placeholder-gray-500 text-sm"
+        className="w-full h-full pl-1 outline-none placeholder-gray-500 text-sm text-[var(--text-primary)]"
       />
 
       {/* {(type === "password" || type === "text") && (

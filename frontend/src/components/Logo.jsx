@@ -1,13 +1,8 @@
 import React from 'react';
 
-/**
-  Codex Logo Component
- @param {string} size - sm, md, lg, xl
- @param {boolean} iconOnly
-  @param {string} className 
- */
+
 const Logo = ({ size = 'md', iconOnly = false, className = "" }) => {
-  // Mapping sizes to Tailwind classes
+  
   const sizes = {
     sm: { container: 'gap-2', icon: 'h-8 w-8', text: 'text-lg', svg: 16 },
     md: { container: 'gap-3', icon: 'h-10 w-10', text: 'text-2xl', svg: 20 },
@@ -19,7 +14,7 @@ const Logo = ({ size = 'md', iconOnly = false, className = "" }) => {
 
   return (
     <div className={`flex items-center font-sans ${current.container} ${className}`}>
-      {/* Icon Box */}
+      
       <div className={`${current.icon} flex items-center justify-center rounded-xl bg-indigo-600 shadow-lg shadow-indigo-500/30`}>
         <svg
           width={current.svg}
@@ -31,7 +26,7 @@ const Logo = ({ size = 'md', iconOnly = false, className = "" }) => {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          {/* stylized code bracket */}
+         
           <polyline points="16 18 22 12 16 6" />
           <polyline points="8 6 2 12 8 18" />
         </svg>
