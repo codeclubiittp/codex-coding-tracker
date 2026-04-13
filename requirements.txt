@@ -8,5 +8,6 @@ passlib
 greenlet
 httpx
 crytography
-psycopg2-binary
+asyncpg
+python-dotenv
 
