@@ -7,7 +7,7 @@ bcrypt
 passlib
 greenlet
 httpx
-crytography
+cryptography
 asyncpg
 python-dotenv
 
